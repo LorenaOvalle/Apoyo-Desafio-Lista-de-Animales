@@ -1,78 +1,30 @@
-// creando clases y su herencia
-class Propietario {
-  constructor(nombre, direccion, telefono) {
-    this.nombre = nombre;
-    this.direccion = direccion;
-    this.telefono = telefono;
-  }
-  datosPropietario() {
-    return `El nombre del dueño es: "${this.nombre}". Su domicilio es: ${this.direccion} y el número telefónico de contacto es : ${this.telefono}`;
-  }
-}
-
-class Animal extends Propietario {
-  constructor(nombre, direccion, telefono, tipo) {
-    super(nombre, direccion, telefono);
-    this._tipo = tipo;
-  }
-  get getTipo() {
-    return `El tipo de animal es un: "${this._tipo}"`;
-  }
-}
-
-class Mascota extends Animal {
-  constructor(nombre, direccion, telefono, tipo, nombreM, enfermedadM) {
-    super(nombre, direccion, telefono, tipo);
-    this._nombreM = nombreM;
-    this._enfermedadM = enfermedadM;
-  }
-  get getNombreM() {
-    return this._nombreM;
-  }
-  set setNombreM(new_nombreM) {
-    return (this._nombreM = new_nombreM);
-  }
-
-  get getEnfermedad() {
-    return this._enfermedadM;
-  }
-  set setEnfermedadM(new_enfermedadM) {
-    return (this._enfermedadM = new_enfermedadM);
-  }
-}
-
-const agregaDatos = (e) => {
-  e.preventDefault();
-  let nombreD = document.querySelector("#propietario").value;
-  let telefono = document.querySelector("#telefono").value;
-  let direccion = document.querySelector("#direccion").value;
-  let mascN = document.querySelector("#nombreMascota").value;
-  let enfermedad_m = document.querySelector("#enfermedad").value;
-  let tipo = document.querySelector("#tipo");
-  let tipoM = tipo.options[tipo.selectedIndex].text;
-
-  if (
-    nombreD == "" ||
-    direccion == "" ||
-    mascN == "" ||
-    enfermedad_m == "" ||
-    telefono === ""
-  ) {
-    return alert("Todos los datos son necesarios.");
-  }
-  if (isNaN(telefono)) {
-    alert("El telefono debe ser un número sin espacios");
-  } else {
-    m1 = new Mascota(nombreD, direccion, telefono, tipoM, mascN, enfermedad_m);
-
-    return (document.querySelector(
-      "#resultado ul"
-    ).innerHTML = `<li>${m1.datosPropietario()}</li> 
-              <li>${m1.getTipo}, mientras que el nombre de la mascota es: "${
-      m1.getNombreM
-    }" y la enfermedad es: ${m1.getEnfermedad}</li>`);
+//1. Implementar ES6 para toda la estructura del código.
+//2.-Crear una función asíncrona para obtener los datos de la URL
+const get_albumes = async () => {
+  const url = "https://jsonplaceholder.typicode.com/photos";
+  //3.-Dentro de un bloque Try/Catch, utilizar el método fetch mediante la instrucción awaitpara recibir el valor directamente de la promesa
+  try {
+    const datos = await fetch(url);
+    const albumes = await datos.json();
+    //4.-Utilizar un método de iteración de arreglos (por ejemplo: forEach) para mostrar solamente los primeros 20 títulos de los datos recibidos.
+    console.log(albumes.slice(0, 20));
+  } catch (error) {
+    console.log(error);
   }
 };
-const form = document.querySelector("form");
+//5.-Crear una función que retorne una promesa después de tres (3) segundos utilizando setTimeout. El mensaje a retornar debe ser un string que indique: “Información Enviada”.
+const funcion_promesa = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("Información Enviada");
+    }, 3000);
+  });
+};
 
-form.addEventListener("submit", agregaDatos);
+//6.-Crear una función asíncrona que permita recibir el mensaje de la promesa creada en el requerimiento cinco (5), de forma directa con await, para ser mostrado en la consola del navegador, agregando el llamado a las dos funciones principales.
+const funcion_asincrona = async () => {
+  get_albumes();
+  const msg = await funcion_promesa();
+  console.log(msg);
+};
+funcion_asincrona();
